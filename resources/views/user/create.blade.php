@@ -18,6 +18,9 @@
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required><br><br>
 
+        <label for="department_id">Department:</label>
+        <input type="text" name="department_id" id="department_id" require><br><br>
+
         <button type="submit">Create</button>
     </form>
 </body>
