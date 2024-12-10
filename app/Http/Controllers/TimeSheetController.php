@@ -39,7 +39,6 @@ class TimeSheetController extends Controller{
         } catch (ValidationException $e) {
             return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch(Exception $e){
-            // Ghi log chi tiết
             Log::error('Error creating timesheet', ['exception' => $e]);
             return response()->json(['message' => 'Internal Server Error'], 500);
         }

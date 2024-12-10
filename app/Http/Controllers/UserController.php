@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreUserRequest;
+
 class UserController extends Controller
 {
     public function home()
@@ -25,14 +27,14 @@ class UserController extends Controller
         return view('user.index', compact('users'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'department_id' => 'required|exists:departments,id'
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:users,email',
+        //     'password' => 'required|string|min:6',
+        //     'department_id' => 'required|exists:departments,id'
+        // ]);
 
         // $user = User::create([
         //     'name' => $request->input('name'),
