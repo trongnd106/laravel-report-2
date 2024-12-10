@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Timesheet extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'user_id',
         'work_date',

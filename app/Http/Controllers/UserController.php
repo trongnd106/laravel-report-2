@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Department;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
@@ -33,20 +34,27 @@ class UserController extends Controller
             'department_id' => 'required|exists:departments,id'
         ]);
 
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')), 
-            'department_id' => $request->input('department_id')
-        ]);
+        // $user = User::create([
+        //     'name' => $request->input('name'),
+        //     'email' => $request->input('email'),
+        //     'password' => bcrypt($request->input('password')), 
+        //     'department_id' => $request->input('department_id')
+        // ]);
+
+        $user = User::create($request->all());
+
 
         return redirect()->route('user.index')->with('success', 'User created successfully!');
     }
 
     public function getDetail($id)
     {
-        $user = User::find($id);
-        return view('user.edit', compact('user'));
+        try {
+            $user = User::find($id);
+            return view('user.edit', compact('user'));
+        } catch(ModelNotFoundException $e){
+            echo $e->getMessage();
+        }
     }
 
     public function destroy($id)
@@ -73,5 +81,16 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('user.index')->with('success', 'User updated successfully!');
+    }
+
+    // get first 100 users
+    public function getManyUsers(){
+        return User::take(100)->get();
+    }
+
+    public function getDeparmentUsers($department_id): string|null{
+        $countUser = User::where('department_id',$department_id)->count();
+        echo $countUser;
+        return `There are {$countUser} work in department {$department_id}`;
     }
 }

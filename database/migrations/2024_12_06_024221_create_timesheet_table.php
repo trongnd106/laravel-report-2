@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('timesheet', function (Blueprint $table) {
+        Schema::create('timesheets', function (Blueprint $table) {
             $table->id();
             $table->string('user_id')->constrained()->onDelete('cascade');
-            $table->date('wordk_date');
-            $table->time('check-in');
-            $table->time('check-out');
+            $table->date('work_date');
+            $table->time('check_in');
+            $table->time('check_out');
             $table->decimal('hours_worked',5,2);
             $table->timestamps();
         });

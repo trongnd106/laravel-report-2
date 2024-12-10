@@ -12,7 +12,7 @@ class CompanySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('company')->insert([
+        DB::table('companies')->insert([
             [
                 'name' => 'Kaopiz Software',
                 'size' => 180,
