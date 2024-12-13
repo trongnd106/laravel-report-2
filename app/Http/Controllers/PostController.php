@@ -28,6 +28,7 @@ class PostController extends Controller
 
         $post = Post::findOrFail($id);
 
+        // Laravel tự lấy user từ session, cơ chế dc tích hợp vs Gate, Policy
         $response = Gate::inspect('update',$post);
         if( $response->allowed()){
             Post::where('id',$id)->update([
@@ -38,5 +39,8 @@ class PostController extends Controller
         } else {
             return response()->json(['error' => $response->message()], 403);
         }
+    }
+
+    public function getAll(){
     }
 }

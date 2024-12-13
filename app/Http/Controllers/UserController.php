@@ -8,9 +8,17 @@ use App\Models\Department;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreUserRequest;
+use App\Services\UserService;
+use Exception;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService){
+        $this->userService = $userService;
+    }
+
     public function home()
     {
         return view('example.home', ['message' => 'This is Home Page!']);
@@ -85,9 +93,39 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'User updated successfully!');
     }
 
-    // get first 100 users
     public function getManyUsers(){
-        return User::take(100)->get();
+        try {
+            $data = $this->userService->get100Users();
+            return response()->json(['data' => $data], 200); 
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Unable to retrieve users',
+                'message' => $e->getMessage()
+            ], 500); 
+        }
+    }
+
+    public function getAllWithPaginated(){
+        try {
+            $users = $this->userService->getAll();
+            return response()->json($users,200);
+        } catch(Exception $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function createOne(Request $request){
+        try {
+            $user = $this->userService->create($request->all());
+            return response()->json($user,200);
+        } catch(Exception $e){
+            return response()->json([
+                'error' => 'Internal server error! Create user failed',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function getDeparmentUsers($department_id): string|null{
