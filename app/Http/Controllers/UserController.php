@@ -24,7 +24,7 @@ class UserController extends Controller
     public function getAll()
     {
         $users = DB::table('users')->get(); 
-        return view('user.index', compact('users'));
+        return view('user.index', data: compact('users'));
     }
 
     public function store(StoreUserRequest $request)
